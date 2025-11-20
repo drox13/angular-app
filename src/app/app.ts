@@ -8,5 +8,13 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('angular-app');
+  protected readonly title = 'HOLA MUNDO angular-app';
+  enabled: boolean = false;
+
+  courses: string[] = ['Angular', 'Spring boot', 'React'];
+
+  setEnabled(): void{
+    this.enabled= this.enabled? false: true;
+    console.log('hemos hecho click en setEnabled')
+  }
 }
