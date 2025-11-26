@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, output } from '@angular/core';
 import { Product } from '../../models/product';
 import { FormsModule } from '@angular/forms';
 
@@ -15,5 +15,12 @@ export class Form {
     description: '',
     price: 0
   };
+
+  newProductEvent = output<Product>();
+
+  onSubmit(): void{
+    this.newProductEvent.emit(this.product)
+    console.log(this.product);
+  }
 
 }

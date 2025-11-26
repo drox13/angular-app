@@ -21,5 +21,12 @@ export class ProductComponent implements OnInit{
     })
   }
 
+  addProduct(product: Product){
+    this.products.push(product) // mutable en RAM
+    product.id = new Date().getTime();
+
+    // this.products = [... this.products, {...product, id: new Date().getTime() }]// inmutable en RAM importante en react
+  }
+
 
 }
