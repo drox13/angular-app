@@ -43,5 +43,8 @@ export class ProductComponent implements OnInit{
     this.productSeleted = productRow;
   }
 
+  onRemoveProduct(id: number): void{
+    this.products = this.products.filter(product => product.id != id)
+  }
 
 }
