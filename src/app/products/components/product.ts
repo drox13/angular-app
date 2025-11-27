@@ -23,10 +23,20 @@ export class ProductComponent implements OnInit{
   }
 
   addProduct(product: Product){
-    this.products.push(product) // mutable en RAM
-    product.id = new Date().getTime();
+    if(product.id > 0){
+      this.products = this.products.map(prod => {
+        if(prod.id == product.id){
+          return{...product}
+        }
+        return prod;
+      })
+    }else{
+      this.products.push(product) // mutable en RAM
+      product.id = new Date().getTime();
 
-    // this.products = [... this.products, {...product, id: new Date().getTime() }]// inmutable en RAM importante en react
+      // this.products = [... this.products, {...product, id: new Date().getTime() }]// inmutable en RAM importante en react
+    }
+
   }
 
   onUpdateProduct(productRow: Product){
