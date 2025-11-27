@@ -36,6 +36,7 @@ export class ProductComponent implements OnInit{
 
       // this.products = [... this.products, {...product, id: new Date().getTime() }]// inmutable en RAM importante en react
     }
+    this.productSeleted  = new Product();
 
   }
 
