@@ -32,4 +32,7 @@ export class Form {
     console.log(this.product);
   }
 
+  clean(): void{
+    this.product = new Product();
+  }
 }
