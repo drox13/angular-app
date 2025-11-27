@@ -12,6 +12,7 @@ import { Form } from "./form/form";
 export class ProductComponent implements OnInit{
 
   products: Product[] = [];
+  productSeleted: Product = new Product();
 
   constructor( private service: ProductService){ }
 
@@ -26,6 +27,10 @@ export class ProductComponent implements OnInit{
     product.id = new Date().getTime();
 
     // this.products = [... this.products, {...product, id: new Date().getTime() }]// inmutable en RAM importante en react
+  }
+
+  onUpdateProduct(productRow: Product){
+    this.productSeleted = productRow;
   }
 
 
