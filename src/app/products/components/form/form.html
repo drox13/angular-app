@@ -1,14 +1,15 @@
 <form (ngSubmit)="onSubmit()">
   <div>
-    <input type="text" placeholder="Name" name="name" [(ngModel)]="product.name">
+    <input type="text" class="form-control my-2" placeholder="Name" name="name" [(ngModel)]="product.name">
   </div>
   <div>
-    <input type="text" placeholder="Description" name="description" [(ngModel)]="product.description">
+    <input type="text" class="form-control my-2" placeholder="Description" name="description"
+      [(ngModel)]="product.description">
   </div>
   <div>
-    <input type="number" placeholder="Price" name="price" [(ngModel)]="product.price">
+    <input type="number" class="form-control my-2" placeholder="Price" name="price" [(ngModel)]="product.price">
   </div>
   <div>
-    <button> {{product.id >0 ? 'Update': 'Create'}}</button>
+    <button class="btn btn-primary"> {{product.id >0 ? 'Update': 'Create'}}</button>
   </div>
 </form>
