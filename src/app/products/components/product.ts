@@ -1,64 +1,63 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ProductService } from '../services/product';
+
+import { Form } from './form/form';
 import { Product } from '../models/product';
-import { Form } from "./form/form";
 
 @Component({
   selector: 'app-product',
-  imports: [Form],
+  standalone: true,
+  imports: [CommonModule, Form],
   templateUrl: './product.html',
-  styleUrl: './product.css',
+  styleUrl: './product.css'
 })
-export class ProductComponent implements OnInit{
+export class ProductComponent {
+onUpdateProduct(arg0: any) {
+throw new Error('Method not implemented.');
+}
 
-  products: Product[] = [];
-  productSeleted: Product = new Product();
+  // LISTA DE PRODUCTOS COMO SIGNAL
+  products = signal<Product[]>([]);
 
-  constructor( private service: ProductService, private cd: ChangeDetectorRef){ }
+  // PRODUCTO SELECCIONADO PARA EL FORMULARIO
+  productSelected = signal<Product>({
+    id: 0,
+    name: '',
+    description: '',
+    price: 0
+  });
 
-
-  private render(): void{
-    this.cd.detectChanges(); // <-- fuerza el render
-  }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.service.findAll().subscribe(products =>{
-      this.products = products;
-      this.render();
-    })
+    this.loadProducts();
   }
 
-  addProduct(product: Product){
-    if(product.id > 0){ // aca edita
-      this.service.update(product).subscribe( productUpdate => {
-
-        this.products = this.products.map(prod => {
-          if(prod.id == product.id){
-            return{...productUpdate}
-          }
-          return prod;
-        });
-        this.render();
-
-      });
-    }else{ // aca crea
-      this.service.create(product).subscribe(productNew => {
-        // this.products.push({... productNew }) // mutable en RAM
-
-        this.products = [... this.products, {...productNew }]// inmutable en RAM importante en react
-        this.render()
-      });
-
-    }
-    this.productSeleted  = new Product();
+  loadProducts(): void {
+    this.productService.findAll().subscribe({
+      next: (data) => {
+        console.log("respuesta del backend:", data);
+        this.products.set(data); // <-- AQUÍ SE REFRESCA AUTOMÁTICO
+      }
+    });
   }
 
-  onUpdateProduct(productRow: Product){
-    this.productSeleted = {... productRow};
+  addProduct(product: Product): void {
+    this.productService.create(product).subscribe({
+      next: () => {
+        this.loadProducts(); // <-- REFRESCAR
+        this.clean();
+      }
+    });
   }
 
-  onRemoveProduct(id: number): void{
-    this.products = this.products.filter(product => product.id != id)
+  clean(): void {
+    this.productSelected.set({
+      id: 0,
+      name: '',
+      description: '',
+      price: 0
+    });
   }
-
 }

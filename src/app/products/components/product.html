@@ -1,38 +1,36 @@
-<div class="container my-4">
-  <h2>Listado de productos!</h2>
+<h1>Listado de productos!</h1>
 
-  <div class="row">
-    <div class="col">
-      <app-form (newProductEvent)="addProduct($event)" [product]=productSeleted></app-form>
-    </div>
-    <div class=" col">
+<!-- FORM -->
+<app-form [product]="productSelected()" (newProductEvent)="addProduct($event)">
+</app-form>
 
-      @if (products.length > 0) {
-      <table class="table table-hover table-striped">
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>description</th>
-            <th>price</th>
-            <th>update</th>
-            <th>remove</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (product of products; track $index) {
-          <tr>
-            <td>{{product.name}}</td>
-            <td>{{product.description}}</td>
-            <td>{{product.price}}</td>
-            <td><button (click)="onUpdateProduct(product)" class="btn btn-sm btn-secondary">update</button></td>
-            <td><button (click)="onRemoveProduct(product.id)" class="btn btn-sm btn-danger">remove</button></td>
-          </tr>
-          }
-        </tbody>
-      </table>
-      }@else {
-      <div class="alert alert-info">Lo sentimos no hay registros en el sistema</div>
-      }
-    </div>
-  </div>
+<hr>
+
+<!-- MENSAJE -->
+<div class="alert alert-info" *ngIf="products().length === 0">
+  Lo sentimos no hay registros en el sistema
 </div>
+
+<!-- TABLA -->
+<table class="table table-striped" *ngIf="products().length > 0">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <td>Editar</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (prod of products(); track prod.id) {
+    <tr>
+      <td>{{ prod.id }}</td>
+      <td>{{ prod.name }}</td>
+      <td>{{ prod.description }}</td>
+      <td>{{ prod.price }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
