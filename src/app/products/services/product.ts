@@ -28,10 +28,16 @@ export class ProductService {
 
   findAll(): Observable<Product[]>{
     // return of(this.products); // el of conviente en tipo observable
-    return this.http.get<Product[]>(this.url).pipe(
+    return this.http.get(this.url).pipe(
       map( (response: any) =>  response._embedded.products as Product[]),
     );
-
   }
 
+  create(product: Product): Observable<Product>{
+    return this.http.post<Product>(this.url, product);
+  }
+
+  update(product: Product): Observable<Product>{
+    return this.http.put<Product>(`${this.url}/${product.id}`, product);
+  }
 }

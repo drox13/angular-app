@@ -16,29 +16,41 @@ export class ProductComponent implements OnInit{
 
   constructor( private service: ProductService, private cd: ChangeDetectorRef){ }
 
+
+  private render(): void{
+    this.cd.detectChanges(); // <-- fuerza el render
+  }
+
   ngOnInit(): void {
     this.service.findAll().subscribe(products =>{
       this.products = products;
-      this.cd.detectChanges(); // <-- fuerza el render
+      this.render();
     })
   }
 
   addProduct(product: Product){
-    if(product.id > 0){
-      this.products = this.products.map(prod => {
-        if(prod.id == product.id){
-          return{...product}
-        }
-        return prod;
-      })
-    }else{
-      this.products.push(product) // mutable en RAM
-      product.id = new Date().getTime();
+    if(product.id > 0){ // aca edita
+      this.service.update(product).subscribe( productUpdate => {
 
-      // this.products = [... this.products, {...product, id: new Date().getTime() }]// inmutable en RAM importante en react
+        this.products = this.products.map(prod => {
+          if(prod.id == product.id){
+            return{...productUpdate}
+          }
+          return prod;
+        });
+        this.render();
+
+      });
+    }else{ // aca crea
+      this.service.create(product).subscribe(productNew => {
+        // this.products.push({... productNew }) // mutable en RAM
+
+        this.products = [... this.products, {...productNew }]// inmutable en RAM importante en react
+        this.render()
+      });
+
     }
     this.productSeleted  = new Product();
-
   }
 
   onUpdateProduct(productRow: Product){

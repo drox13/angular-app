@@ -29,7 +29,6 @@ export class Form {
 
   onSubmit(): void{
     this.newProductEvent.emit(this.product)
-    console.log(this.product);
   }
 
   clean(): void{
