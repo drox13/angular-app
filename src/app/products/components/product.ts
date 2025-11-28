@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product';
 import { Product } from '../models/product';
 import { Form } from "./form/form";
@@ -14,11 +14,12 @@ export class ProductComponent implements OnInit{
   products: Product[] = [];
   productSeleted: Product = new Product();
 
-  constructor( private service: ProductService){ }
+  constructor( private service: ProductService, private cd: ChangeDetectorRef){ }
 
   ngOnInit(): void {
     this.service.findAll().subscribe(products =>{
       this.products = products;
+      this.cd.detectChanges(); // <-- fuerza el render
     })
   }
 
